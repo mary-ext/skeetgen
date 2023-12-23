@@ -28,6 +28,11 @@ class ExportDataForm extends HTMLElement {
 
 	private object_url: string | undefined;
 
+	handle_before_unload = (ev: BeforeUnloadEvent) => {
+		ev.preventDefault();
+		ev.returnValue = true;
+	};
+
 	connectedCallback() {
 		if (!supports_fsa) {
 			const $fsa_warning = this.fsa_warning.get()!;
@@ -82,15 +87,23 @@ class ExportDataForm extends HTMLElement {
 						return;
 					}
 
+					window.addEventListener('beforeunload', this.handle_before_unload);
+
 					this.download_archive(signal, fd, identifier, with_media).then(
 						() => {
 							// If we got here, we're still dealing with our own controller.
 							controller!.abort();
+
+							window.removeEventListener('beforeunload', this.handle_before_unload);
 						},
 						(err) => {
 							if (signal.aborted) {
 								return;
 							}
+
+							console.error(err);
+
+							window.removeEventListener('beforeunload', this.handle_before_unload);
 
 							$status.textContent = err.message;
 							$status.classList.add('text-red-500');

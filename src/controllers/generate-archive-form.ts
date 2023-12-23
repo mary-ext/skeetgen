@@ -37,6 +37,11 @@ class GenerateArchiveForm extends HTMLElement {
 
 	private fsa_large_warning = target<HTMLDivElement>(this, 'fsa_large_warning');
 
+	handle_before_unload = (ev: BeforeUnloadEvent) => {
+		ev.preventDefault();
+		ev.returnValue = true;
+	};
+
 	connectedCallback() {
 		{
 			const $picker_input = this.picker_input.get()!;
@@ -96,10 +101,14 @@ class GenerateArchiveForm extends HTMLElement {
 						return;
 					}
 
+					window.addEventListener('beforeunload', this.handle_before_unload);
+
 					this.generate_archive(signal, fd, archive, with_media).then(
 						() => {
 							// If we got here, we're still dealing with our own controller.
 							controller!.abort();
+
+							window.removeEventListener('beforeunload', this.handle_before_unload);
 						},
 						(err) => {
 							if (signal.aborted) {
@@ -107,6 +116,8 @@ class GenerateArchiveForm extends HTMLElement {
 							}
 
 							console.error(err);
+
+							window.removeEventListener('beforeunload', this.handle_before_unload);
 
 							$status.textContent = err.message;
 							$status.classList.add('text-red-500');
