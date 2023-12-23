@@ -53,7 +53,7 @@ export function TimelinePage({ type, current_page, total_pages, posts }: Timelin
 										post={item.post}
 										has_prev={idx !== 0}
 										has_next={idx !== arr.length - 1}
-										always_show_replies={false}
+										always_show_replies={true}
 									/>
 								);
 							})}
