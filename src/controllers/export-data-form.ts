@@ -287,6 +287,10 @@ class ExportDataForm extends HTMLElement {
 									},
 								});
 							} catch (err) {
+								if (signal.aborted) {
+									return;
+								}
+
 								if (err instanceof XRPCError) {
 									// we got ratelimited, let's cool down
 									if (err.status === ResponseType.RateLimitExceeded) {
