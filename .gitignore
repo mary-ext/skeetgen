@@ -1,0 +1,16 @@
+/node_modules/
+/dist/
+/.wireit/
+
+/public/archive_assets/
+
+.npm-*.log
+.pnpm-*.log
+.yarn-*.log
+npm-*.log
+pnpm-*.log
+yarn-*.log
+
+*.local
+
+tsconfig.tsbuildinfo

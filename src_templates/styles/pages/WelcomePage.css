@@ -1,0 +1,13 @@
+.WelcomePage__content {
+	@apply grow p-[16px];
+}
+.WelcomePage__header {
+	@apply text-balance text-lg font-bold;
+}
+.WelcomePage__paragraph {
+	@apply mt-[4px] text-pretty;
+}
+
+.WelcomePage__footer {
+	@apply px-[16px] py-2 text-center text-[13px] text-neutral-400/100;
+}

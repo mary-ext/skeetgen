@@ -1,0 +1,19 @@
+.EmbedList {
+	@apply flex gap-[12px] rounded-md border p-[12px];
+}
+
+.EmbedList__avatarContainer {
+	@apply mt-[2px] h-[36px] w-[36px] overflow-hidden rounded-md bg-neutral-500/100;
+}
+.EmbedList__avatar {
+	@apply h-full w-full object-cover;
+}
+
+.EmbedList__main {
+}
+.EmbedList__name {
+	@apply font-bold;
+}
+.EmbedList__type {
+	@apply text-neutral-400/100;
+}

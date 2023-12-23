@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Bluesky archiver tool</title>
+		<script type="module" src="./src/main-generator.ts"></script>
+	</head>
+	<body>
+		<div class="min-h-screen bg-neutral-950 text-sm text-white">
+			<fieldset
+				id="fieldset"
+				disabled
+				class="mx-auto flex min-h-screen max-w-xl flex-col border-neutral-700 sm:border-x"
+			>
+				<div class="p-4">
+					<h1 class="text-base font-semibold">skeetgen</h1>
+					<p>Generate a publicly viewable archive of your Bluesky posts</p>
+					<div class="flex gap-1 text-neutral-400">
+						<span
+							>built by
+							<a href="https://bsky.app/profile/mary.my.id" class="text-blue-400 hover:underline"
+								>mary</a
+							></span
+						>
+						<span aria-hidden="true">|</span>
+						<a href="https://github.com/mary-ext/skeetgen" class="text-blue-400 hover:underline"
+							>source code</a
+						>
+					</div>
+				</div>
+
+				<noscript>
+					<div class="mx-4 rounded bg-yellow-900 px-4 py-3">
+						<h2 class="font-semibold">Please enable JavaScript.</h2>
+						<p>
+							We can't function without it, this tool generates archives entirely in your device without a
+							connection to any servers. Don't worry, JavaScript will only be necessary for your archive's
+							search functionality.
+						</p>
+					</div>
+				</noscript>
+
+				<generate-archive-form class="contents">
+					<form class="contents" data-target="generate-archive-form.form">
+						<div class="flex gap-4 p-4">
+							<div>
+								<div
+									class="grid h-6 w-6 place-items-center rounded-full bg-neutral-800 py-1 font-bold leading-none"
+								>
+									1
+								</div>
+							</div>
+							<div>
+								<h3 class="font-semibold">Select your data export</h3>
+								<p>This will not be shared to any servers, any processing is done on your device.</p>
+
+								<p class="mb-3 text-neutral-400">
+									Don't have one yet?
+									<a href="export.html" target="_blank" class="text-blue-500 hover:underline">click here</a>.
+								</p>
+
+								<div class="mt-2 flex items-center gap-4">
+									<label class="group pointer-events-none relative inline-flex cursor-pointer">
+										<input
+											type="file"
+											name="archive"
+											class="peer pointer-events-none absolute bottom-0 left-1/2 h-1 w-1 opacity-0"
+											required
+											accept="application/x-tar"
+											data-target="generate-archive-form.picker_input"
+										/>
+										<div
+											class="pointer-events-auto whitespace-nowrap rounded bg-blue-900 px-3 py-2 ring-blue-700 ring-offset-2 ring-offset-neutral-900 group-hover:bg-blue-700 peer-focus:ring-2 peer-disabled:pointer-events-none peer-disabled:opacity-50"
+										>
+											Choose file
+										</div>
+									</label>
+
+									<span class="opacity-50" data-target="generate-archive-form.picker_label"
+										>No file selected.</span
+									>
+								</div>
+
+								<div
+									class="mt-4 rounded bg-yellow-900 px-4 py-3"
+									style="display: none"
+									data-target="generate-archive-form.fsa_large_warning"
+								>
+									<h2 class="font-semibold">Uh oh, large archive incoming.</h2>
+									<p>
+										Your browser doesn't seem to support
+										<span class="font-medium">Filesystem Access API</span>, which allows the site to have
+										direct control over saving the file. It will still work, however, you might see very high
+										memory usage when generating the archive. Consider temporarily switching to Chrome for
+										this.
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<!-- <div class="flex gap-4 p-4">
+							<div>
+								<div
+									class="grid h-6 w-6 place-items-center rounded-full bg-neutral-800 py-1 font-bold leading-none"
+								>
+									2
+								</div>
+							</div>
+							<div>
+								<h3 class="font-semibold">Select output format</h3>
+								<p>Choose how you want the generated archive to be saved as.</p>
+
+								<div class="mt-3 flex flex-col gap-2">
+									<label class="flex items-center gap-3">
+										<input
+											type="radio"
+											name="output"
+											checked
+											value="folder"
+											class="peer h-4 w-4 border-neutral-700 bg-neutral-900 text-blue-800 focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50"
+										/>
+										<span class="peer-disabled:opacity-50">Create a .zip archive</span>
+									</label>
+
+									<label class="flex items-center gap-3">
+										<input
+											type="radio"
+											disabled
+											name="output"
+											value="folder"
+											class="peer h-4 w-4 border-neutral-700 bg-neutral-900 text-blue-800 focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50"
+										/>
+										<span class="peer-disabled:opacity-50">Write directly to file system (soon)</span>
+									</label>
+								</div>
+							</div>
+						</div> -->
+
+						<!-- <div class="flex gap-4 p-4">
+							<div>
+								<div
+									class="grid h-6 w-6 place-items-center rounded-full bg-neutral-800 py-1 font-bold leading-none"
+								>
+									2
+								</div>
+							</div>
+							<div>
+								<h3 class="font-semibold">Where's the archive going to be hosted?</h3>
+								<p>
+									This is necessary to be able to show link previews on supported apps, you can leave this
+									empty if you don't intend on sharing the archive.
+								</p>
+
+								<div class="mt-2">
+									<input
+										type="url"
+										name="base_url"
+										placeholder="https://example.com/my-bluesky-archive"
+										class="w-full max-w-96 rounded border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm leading-none placeholder:text-white placeholder:opacity-50 disabled:opacity-50"
+									/>
+								</div>
+							</div>
+						</div> -->
+
+						<div class="flex gap-4 p-4">
+							<div>
+								<div
+									class="grid h-6 w-6 place-items-center rounded-full bg-neutral-800 py-1 font-bold leading-none"
+								>
+									2
+								</div>
+							</div>
+
+							<div>
+								<h3 class="font-semibold">Configure archive generation</h3>
+
+								<div class="mt-4 flex flex-col gap-4">
+									<div>
+										<label class="flex items-center gap-3">
+											<input
+												type="checkbox"
+												name="with_media"
+												checked
+												class="peer h-4 w-4 rounded border-neutral-700 bg-neutral-800 text-blue-800 focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50"
+											/>
+											<span class="peer-disabled:opacity-50">Copy media files to the generated archive</span>
+										</label>
+
+										<p class="ml-7 mt-0.5 text-neutral-400">
+											Turn this off if it takes too long to copy media files when generating from a
+											media-heavy profile, you'd have to manually extract the
+											<code>blobs</code> directory from the export over to the archive.
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="flex gap-4 p-4">
+							<div>
+								<div
+									class="grid h-6 w-6 place-items-center rounded-full bg-neutral-800 py-1 font-bold leading-none"
+								>
+									3
+								</div>
+							</div>
+
+							<div>
+								<h3 class="font-semibold">Are you ready?</h3>
+
+								<div class="mt-2">
+									<button
+										type="submit"
+										class="rounded bg-blue-900 px-3 py-2 outline-none ring-blue-700 ring-offset-2 ring-offset-neutral-900 hover:bg-blue-700 focus:ring-2 disabled:pointer-events-none disabled:opacity-50"
+									>
+										Generate!
+									</button>
+								</div>
+
+								<p class="mt-2 opacity-50 empty:hidden" data-target="generate-archive-form.status"></p>
+							</div>
+						</div>
+					</form>
+				</generate-archive-form>
+			</fieldset>
+		</div>
+	</body>
+</html>

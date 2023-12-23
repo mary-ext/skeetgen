@@ -1,0 +1,30 @@
+.EmbedLink {
+	@apply flex overflow-hidden rounded-md border;
+}
+
+.EmbedLink__thumb {
+	@apply box-content aspect-square w-[86px] shrink-0 border-r object-cover sm:w-[120px];
+}
+
+.EmbedLink__main {
+	@apply flex min-w-0 flex-col justify-center gap-[2px] p-[12px];
+}
+.EmbedLink__domain {
+	@apply overflow-hidden text-ellipsis text-neutral-400/100;
+}
+.EmbedLink__title {
+	@apply line-clamp-2;
+}
+.EmbedLink__title:empty {
+	@apply hidden;
+}
+
+.EmbedLink__desktopOnly {
+	@apply hidden sm:block;
+}
+.EmbedLink__summary {
+	@apply line-clamp-2 text-neutral-400/100;
+}
+.EmbedLink__summary:empty {
+	@apply hidden;
+}

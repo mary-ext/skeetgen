@@ -1,0 +1,35 @@
+.SearchPage__noscript {
+	@apply m-[16px] mb-0 rounded bg-yellow-900 px-[16px] py-[12px] font-medium;
+}
+.SearchPage__loading {
+	@apply m-[16px] text-neutral-400/100;
+}
+
+.SearchPage__header {
+	@apply p-[16px] pb-0;
+}
+
+.SearchPage__input {
+	@apply w-full rounded border border-neutral-700 bg-neutral-900 px-[12px] py-[8px] leading-none;
+}
+.SearchPage__input::placeholder {
+	@apply text-neutral-400/100;
+}
+
+.SearchItem {
+	@apply mx-[16px] py-[16px];
+}
+.SearchItem + .SearchItem {
+	@apply border-t;
+}
+.SearchItem__content {
+}
+.SearchItem__timestamp {
+	@apply mb-[2px] text-neutral-400/100 hover:underline;
+}
+.SearchItem__body {
+	@apply whitespace-pre-wrap break-words;
+}
+.SearchItem__accessory {
+	@apply mt-[2px];
+}

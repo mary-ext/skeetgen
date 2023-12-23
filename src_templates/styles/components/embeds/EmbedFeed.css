@@ -1,0 +1,19 @@
+.EmbedFeed {
+	@apply flex gap-[12px] rounded-md border p-[12px];
+}
+
+.EmbedFeed__avatarContainer {
+	@apply mt-[2px] h-[36px] w-[36px] overflow-hidden rounded-md bg-neutral-500/100;
+}
+.EmbedFeed__avatar {
+	@apply h-full w-full object-cover;
+}
+
+.EmbedFeed__main {
+}
+.EmbedFeed__name {
+	@apply font-bold;
+}
+.EmbedFeed__type {
+	@apply text-neutral-400/100;
+}

@@ -1,0 +1,32 @@
+.EmbedImage {
+}
+.EmbedImage--bordered {
+	@apply overflow-hidden rounded-md border;
+}
+.EmbedImage--standalone {
+	@apply max-w-full self-baseline;
+}
+
+.EmbedImage__grid {
+	@apply flex aspect-video gap-[2px];
+}
+.EmbedImage__col {
+	@apply flex grow basis-0 flex-col gap-[2px];
+}
+
+.EmbedImage__imageContainer {
+	@apply relative;
+}
+.EmbedImage__imageContainer--multiple {
+	@apply min-h-0 grow basis-0 overflow-hidden;
+}
+.EmbedImage__imageContainer--standalone {
+	@apply aspect-video overflow-hidden;
+}
+.EmbedImage__imageContainer--standaloneRatio {
+	@apply max-h-[320px] min-h-[64px] min-w-[64px] max-w-full overflow-hidden;
+}
+
+.EmbedImage__image {
+	@apply h-full w-full object-cover text-[0px];
+}

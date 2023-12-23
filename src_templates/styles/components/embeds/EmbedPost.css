@@ -1,0 +1,51 @@
+.EmbedPost {
+	@apply overflow-hidden rounded-md border;
+}
+
+.EmbedPost__header {
+	@apply mx-[12px] mt-[12px] flex text-neutral-400/100;
+}
+
+.EmbedPost__avatarContainer {
+	@apply mr-[4px] h-[20px] w-[20px] shrink-0 overflow-hidden rounded-full bg-neutral-500/100;
+}
+.EmbedPost__avatar {
+	@apply h-full w-full;
+}
+
+.EmbedPost__nameContainer {
+	@apply flex max-w-full gap-[4px] overflow-hidden text-ellipsis whitespace-nowrap;
+}
+.EmbedPost__displayNameContainer {
+	@apply overflow-hidden text-ellipsis;
+}
+.EmbedPost__displayName {
+	@apply font-bold text-white/100;
+}
+.EmbedPost__handle {
+	@apply block overflow-hidden text-ellipsis whitespace-nowrap;
+}
+
+.EmbedPost__dot {
+	@apply select-none px-1;
+}
+.EmbedPost__date {
+	@apply whitespace-nowrap;
+}
+
+.EmbedPost__body {
+	@apply flex items-start;
+}
+.EmbedPost__imageAside {
+	@apply mb-[12px] ml-[12px] mt-[8px] grow basis-0;
+}
+.EmbedPost__text {
+	@apply mx-[12px] mb-[12px] mt-[4px] line-clamp-6 min-w-0 grow-[4] basis-0 whitespace-pre-wrap break-words;
+}
+.EmbedPost__text:empty {
+	@apply hidden;
+}
+
+.EmbedPost__divider {
+	@apply mt-[12px];
+}

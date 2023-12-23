@@ -1,0 +1,51 @@
+.PermalinkPost {
+	@apply p-[16px];
+}
+
+.PermalinkPost__header {
+	@apply mb-[12px] flex items-center text-neutral-400/100;
+}
+
+.PermalinkPost__avatarContainer {
+	@apply mr-[12px] h-[40px] w-[40px] shrink-0 overflow-hidden rounded-full bg-neutral-500/100;
+}
+.PermalinkPost__avatar {
+	@apply h-full w-full object-cover;
+}
+
+.PermalinkPost__nameContainer {
+	@apply block max-w-full overflow-hidden text-ellipsis whitespace-nowrap;
+}
+.PermalinkPost__displayNameContainer {
+	@apply overflow-hidden text-ellipsis;
+}
+.PermalinkPost__displayName {
+	@apply font-bold text-white/100;
+}
+.PermalinkPost__handle {
+	@apply block overflow-hidden text-ellipsis whitespace-nowrap;
+}
+
+.PermalinkPost__body {
+	@apply mt-[12px] overflow-hidden whitespace-pre-wrap break-words text-base;
+}
+.PermalinkPost__body:empty {
+	@apply hidden;
+}
+
+.PermalinkPost__tags {
+	@apply mt-[12px] flex flex-wrap gap-[6px];
+}
+.PermalinkPost__tag {
+	@apply flex min-w-0 items-center gap-[4px] rounded-full bg-neutral-900/100 px-[8px] leading-6;
+}
+.PermalinkPost__tagText {
+	@apply overflow-hidden text-ellipsis whitespace-nowrap;
+}
+
+.PermalinkPost__footer {
+	@apply mt-[12px];
+}
+.PermalinkPost__date {
+	@apply text-neutral-400/100;
+}

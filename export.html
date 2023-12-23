@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Download Bluesky data export</title>
+		<script type="module" src="./src/main-export.ts"></script>
+	</head>
+	<body>
+		<div class="min-h-screen bg-neutral-950 text-sm text-white">
+			<fieldset id="fieldset" disabled class="mx-auto min-h-screen max-w-xl border-neutral-700 sm:border-x">
+				<export-data-form class="contents">
+					<div class="m-4">
+						<h1 class="text-base font-semibold">Export Bluesky data</h1>
+						<p>Enter your Bluesky handle or DID here to retrieve one.</p>
+					</div>
+
+					<noscript>
+						<div class="m-4 rounded bg-yellow-900 px-4 py-3">
+							<h2 class="font-semibold">Please enable JavaScript.</h2>
+							<p>We can't function without it, as the app entirely runs on your device, sorry!</p>
+						</div>
+					</noscript>
+
+					<div
+						class="m-4 rounded bg-yellow-900 px-4 py-3"
+						style="display: none"
+						data-target="export-data-form.fsa_warning"
+					>
+						<h2 class="font-semibold">Your browser doesn't support Filesystem Access API.</h2>
+						<p>
+							It will still work, however, you may see very high memory usage when exporting a profile with a
+							large amount of posts and images as it has to collect them all in memory. Consider temporarily
+							switching to Chrome for this.
+						</p>
+					</div>
+
+					<p class="m-4 mb-6 opacity-75">
+						Note that these data exports aren't useful on its own, this site retrieves your repository as well
+						as your uploaded media files, and stores it as is without any additional processing. It's intended
+						to be consumed by other tools.
+					</p>
+
+					<form class="m-4" data-target="export-data-form.form">
+						<div class="mb-4">
+							<label class="flex items-center gap-3">
+								<input
+									type="checkbox"
+									name="with_media"
+									checked
+									class="peer h-4 w-4 rounded border-neutral-700 bg-neutral-900 text-blue-800 focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 focus:ring-offset-neutral-900 disabled:opacity-50"
+								/>
+								<span class="peer-disabled:opacity-50">Include media files like images</span>
+							</label>
+						</div>
+
+						<div class="flex items-center gap-2">
+							<input
+								type="text"
+								name="identifier"
+								required
+								title="Bluesky handle or DID"
+								pattern="@?([a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*(?:\.[a-zA-Z]+))|did:[a-z]+:[a-zA-Z0-9._\-]+"
+								placeholder="example.bsky.social"
+								class="rounded border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm leading-none placeholder:text-white placeholder:opacity-50 disabled:opacity-50"
+							/>
+
+							<button
+								type="submit"
+								class="rounded bg-blue-900 px-3 py-2 outline-none ring-blue-700 ring-offset-2 ring-offset-neutral-900 hover:bg-blue-700 focus:ring-2 disabled:pointer-events-none disabled:opacity-50"
+							>
+								Download
+							</button>
+						</div>
+
+						<p class="mt-2 opacity-50 empty:hidden" data-target="export-data-form.status"></p>
+					</form>
+				</export-data-form>
+			</fieldset>
+		</div>
+	</body>
+</html>

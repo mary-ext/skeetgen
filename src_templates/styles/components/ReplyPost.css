@@ -1,0 +1,53 @@
+.ReplyPost {
+	@apply relative flex gap-[12px] px-[12px];
+}
+
+.ReplyPost__aside {
+	@apply shrink-0;
+}
+
+.ReplyPost__avatarContainer {
+	@apply h-[20px] w-[20px] overflow-hidden rounded-full bg-neutral-500/100;
+}
+.ReplyPost__avatar {
+	@apply h-full w-full object-cover;
+}
+
+.ReplyPost__hasChildrenLine {
+	/* @apply absolute bottom-0 left-[21px] top-[28px] border-l-2; */
+	@apply absolute bottom-0 left-[21px] top-[22px] border-l-2;
+}
+.ReplyPost__hasParentLine {
+	/* @apply absolute left-[-11px] top-[-12px] h-[24px] w-[15px] rounded-bl-[8px] border-b-[2px] border-l-[2px]; */
+	@apply absolute left-[-1px] top-[-12px] h-[23px] w-[12px] rounded-bl-[8px] border-b-[2px] border-l-[2px];
+}
+
+.ReplyPost__main {
+	@apply min-w-0 grow;
+}
+
+.ReplyPost__header {
+	@apply mb-[2px] flex items-center text-neutral-400/100;
+}
+.ReplyPost__nameContainer {
+	@apply flex max-w-full gap-1 overflow-hidden text-ellipsis whitespace-nowrap;
+}
+.ReplyPost__displayNameContainer {
+	@apply overflow-hidden text-ellipsis;
+}
+.ReplyPost__displayName {
+	@apply font-bold text-white/100;
+}
+.ReplyPost__handle {
+	@apply block overflow-hidden text-ellipsis whitespace-nowrap;
+}
+.ReplyPost__dot {
+	@apply select-none px-[4px];
+}
+.ReplyPost__datetime {
+	@apply whitespace-nowrap hover:underline;
+}
+
+.ReplyPost__body {
+	@apply whitespace-pre-wrap break-words;
+}

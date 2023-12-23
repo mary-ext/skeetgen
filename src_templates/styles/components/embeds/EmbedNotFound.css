@@ -1,0 +1,10 @@
+.EmbedNotFound {
+	@apply rounded-md border p-[12px];
+}
+
+.EmbedNotFound__self {
+	@apply text-neutral-400/100;
+}
+.EmbedNotFound__other {
+	@apply font-bold;
+}

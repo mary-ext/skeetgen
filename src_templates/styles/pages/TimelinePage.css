@@ -1,0 +1,29 @@
+.TimelinePage__feed {
+	@apply flex flex-col gap-[16px] py-[16px];
+}
+.TimelinePage__feedSeparator {
+	@apply mx-[16px];
+}
+
+.TimelinePage__pagination {
+	@apply flex flex-wrap items-center justify-center gap-[8px] p-[16px];
+}
+.TimelinePage__page {
+	@apply rounded px-[10px] py-[4px] font-medium proportional-nums;
+}
+.TimelinePage__page--active {
+	@apply bg-neutral-700;
+}
+.TimelinePage__page--disabled {
+	@apply text-neutral-500/100;
+}
+.TimelinePage__pageIcon {
+	@apply mx-[-6px] h-[20px] w-[20px];
+}
+.TimelinePage__pageIcon--boundary {
+}
+.TimelinePage__pageIcon--prev {
+	rotate: 180deg;
+}
+.TimelinePage__pageIcon--next {
+}

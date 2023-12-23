@@ -1,0 +1,66 @@
+{
+	"private": true,
+	"type": "module",
+	"name": "bluesky-archiver",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && pnpm run gen && vite build",
+		"gen": "wireit",
+		"preview": "vite preview",
+		"fmt": "prettier --cache --write ."
+	},
+	"wireit": {
+		"gen": {
+			"dependencies": ["gen:archive_css", "gen:archive_search_js"]
+		},
+		"gen:archive_css": {
+			"command": "tailwindcss -i src_templates/styles/index.css -o public/archive_assets/style.css --minify",
+			"files": [
+				"src_templates/styles/**/*.css"
+			],
+			"output": [
+				"public/archive_assets/style.css"
+			]
+		},
+		"gen:archive_search_js": {
+			"command": "esbuild src_templates/scripts/search.js --bundle --format=iife --outfile=public/archive_assets/search.js --minify-syntax --minify-whitespace",
+			"files": [
+				"src_templates/scripts/search.js",
+				"src_templates/scripts/dependencies/**/*.js"
+			],
+			"output": [
+				"public/archive_assets/search.js"
+			]
+		}
+	},
+	"dependencies": {
+		"@akryum/flexsearch-es": "^0.7.32",
+		"@externdefs/bluesky-client": "^0.3.9",
+		"@ipld/car": "^5.2.4",
+		"@ipld/dag-cbor": "^9.0.6",
+		"multiformats": "^12.1.3",
+		"native-file-system-adapter": "^3.0.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.23.6",
+		"@babel/plugin-syntax-typescript": "^7.23.3",
+		"@intrnl/jsx-to-string": "^0.1.5",
+		"@minify-html/node": "^0.11.1",
+		"@rollup/plugin-babel": "^6.0.4",
+		"@tailwindcss/forms": "^0.5.7",
+		"autoprefixer": "^10.4.16",
+		"esbuild": "^0.19.10",
+		"postcss": "^8.4.32",
+		"prettier": "^3.1.1",
+		"prettier-plugin-tailwindcss": "^0.5.9",
+		"tailwindcss": "^3.4.0",
+		"typescript": "^5.3.3",
+		"vite": "^5.0.10",
+		"wireit": "^0.14.1"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"native-file-system-adapter@3.0.0": "patches/native-file-system-adapter@3.0.0.patch"
+		}
+	}
+}

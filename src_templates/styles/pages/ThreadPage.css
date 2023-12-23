@@ -1,0 +1,55 @@
+.ThreadPage__descendants {
+	@apply flex flex-col gap-[12px] py-[12px];
+}
+.ThreadPage__descendants:empty {
+	@apply hidden;
+}
+
+/** ThreadAncestors */
+.ThreadAncestors {
+	@apply pt-[16px];
+}
+
+.ThreadAncestors__header {
+	@apply relative mx-[16px] flex w-max cursor-pointer select-none list-none items-center gap-[8px] rounded px-[16px] py-[8px];
+}
+
+.ThreadAncestors__accordionIcon {
+	@apply ml-[-6px] h-[20px] w-[20px] shrink-0 text-neutral-300/100;
+	rotate: 90deg;
+}
+.ThreadAncestors[open] .ThreadAncestors__accordionIcon {
+	rotate: -90deg;
+}
+.ThreadAncestors__accordionText {
+}
+
+.ThreadAncestors__list {
+	@apply mt-[16px] flex flex-col gap-[16px];
+}
+
+/** ThreadCut */
+.ThreadCut {
+	@apply flex gap-[12px] px-[16px];
+}
+
+.ThreadCut__aside {
+	@apply relative w-[40px];
+}
+.ThreadCut__line {
+	@apply absolute bottom-[-14px] left-[19px] top-[12px] z-0 border-l-2 border-dashed;
+}
+
+.ThreadCut__main {
+	@apply min-w-0 grow;
+}
+.ThreadCut__headerText {
+	@apply font-medium text-neutral-400/100;
+}
+
+.ThreadCut__actions {
+	@apply flex items-center gap-[8px] text-neutral-400/100;
+}
+.ThreadCut__actionSeparator {
+	@apply select-none;
+}

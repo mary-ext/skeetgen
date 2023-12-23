@@ -1,0 +1,13 @@
+diff --git a/package.json b/package.json
+index 18c05781ac63bb3a47e799309756e65ea88f8332..3a08d2b45a420f41511c8254210ad6a3180d0f41 100644
+--- a/package.json
++++ b/package.json
+@@ -24,7 +24,7 @@
+   "engines": {
+     "node": ">=14.8.0"
+   },
+-  "types": "/types/mod.d.ts",
++  "types": "./types/mod.d.ts",
+   "keywords": [
+     "filesystem",
+     "file",

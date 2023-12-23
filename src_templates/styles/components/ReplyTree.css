@@ -1,0 +1,39 @@
+.ReplyTree {
+	@apply relative flex flex-col;
+}
+
+.ReplyTree__hasSiblingLine {
+	/* @apply absolute bottom-0 left-[-11px] top-0 border-l-2; */
+	@apply absolute bottom-0 left-[-1px] top-0 border-l-2;
+}
+
+.ReplyTree__children {
+	/* @apply ml-[32px] mt-3 flex flex-col gap-3; */
+	@apply ml-[22px] mt-[12px] flex flex-col gap-[12px];
+}
+
+.ReplyTree__hasMore {
+	@apply relative pl-[14px];
+}
+.ReplyTree__hasMoreText {
+	@apply font-medium;
+}
+.ReplyTree__hasMoreLine {
+	@apply absolute left-[-1px] top-[-12px] h-[23px] w-[12px] rounded-bl-[8px] border-b-[2px] border-l-[2px];
+}
+
+.ReplyTree__mobileOnly {
+	@apply block;
+}
+.ReplyTree__desktopOnly {
+	@apply hidden;
+}
+
+@media (min-width: 432px) {
+	.ReplyTree__mobileOnly {
+		@apply hidden;
+	}
+	.ReplyTree__desktopOnly {
+		@apply block;
+	}
+}

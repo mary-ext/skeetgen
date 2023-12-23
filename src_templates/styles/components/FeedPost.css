@@ -1,0 +1,71 @@
+.FeedPost {
+}
+
+/** Context */
+.FeedPost__context {
+	@apply relative flex flex-col px-[16px];
+}
+.FeedPost__contextItem {
+	@apply mb-[4px] mt-[-4px] flex items-center pl-[52px] text-[13px] text-neutral-400/100;
+}
+.FeedPost__contextLine {
+	@apply absolute bottom-[2px] left-[35px] top-0 border-l-2 border-dashed;
+}
+.FeedPost__contextText {
+	@apply overflow-hidden text-ellipsis font-medium hover:underline;
+}
+
+/** Content */
+.FeedPost__content {
+	@apply relative flex gap-[12px] px-[16px];
+}
+
+.FeedPost__aside {
+	@apply shrink-0;
+}
+
+.FeedPost__avatarContainer {
+	@apply h-[40px] w-[40px] overflow-hidden rounded-full bg-neutral-500/100;
+}
+.FeedPost__avatar {
+	@apply h-full w-full;
+}
+
+.FeedPost__hasNextLine {
+	@apply absolute bottom-[-14px] left-[35px] top-[42px] border-l-2;
+}
+
+.FeedPost__main {
+	@apply flex min-w-0 grow flex-col;
+}
+
+.FeedPost__header {
+	@apply mb-[2px] flex items-center text-neutral-400/100;
+}
+.FeedPost__nameContainer {
+	@apply flex max-w-full gap-1 overflow-hidden text-ellipsis whitespace-nowrap;
+}
+.FeedPost__displayNameContainer {
+	@apply overflow-hidden text-ellipsis;
+}
+.FeedPost__displayName {
+	@apply font-bold text-white/100;
+}
+.FeedPost__handle {
+	@apply block overflow-hidden text-ellipsis whitespace-nowrap;
+}
+
+.FeedPost__dot {
+	@apply select-none px-[4px];
+}
+.FeedPost__date {
+	@apply whitespace-nowrap hover:underline;
+}
+
+.FeedPost__body {
+	@apply whitespace-pre-wrap break-words;
+}
+
+.FeedPost__replies {
+	@apply mt-[2px];
+}

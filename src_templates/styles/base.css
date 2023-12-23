@@ -1,0 +1,49 @@
+:root {
+	color-scheme: dark;
+	overflow-y: scroll;
+}
+
+*:focus-visible {
+	@apply outline outline-2 outline-blue-500/100;
+}
+
+.Root {
+	@apply min-h-screen bg-neutral-950/100 text-sm text-white/100;
+}
+
+.Page {
+	@apply mx-auto flex min-h-screen max-w-xl flex-col sm:border-x;
+}
+.PageHeader {
+	@apply box-content flex h-[48px] items-center gap-[16px] border-b px-[16px];
+}
+
+.Interactive {
+	@apply cursor-pointer;
+}
+.Interactive:hover {
+	@apply bg-neutral-600/10;
+}
+.Interactive--primary:hover {
+	@apply bg-neutral-600/30;
+}
+
+.Link {
+	@apply text-blue-400/100 hover:underline;
+}
+.Mention {
+	@apply text-blue-400/100 hover:underline;
+}
+.Hashtag {
+	@apply text-neutral-400/100;
+}
+
+.Filters {
+	@apply flex flex-wrap items-center gap-[8px] p-[16px];
+}
+.Filter {
+	@apply rounded px-[8px] py-[4px] font-medium;
+}
+.Filter--active {
+	@apply bg-neutral-700/100;
+}

@@ -1,0 +1,6 @@
+.Embed {
+	@apply mt-[12px] flex flex-col gap-[12px];
+}
+.Embed:empty {
+	@apply hidden;
+}
