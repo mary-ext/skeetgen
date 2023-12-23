@@ -28,6 +28,9 @@ dependencies:
   native-file-system-adapter:
     specifier: ^3.0.0
     version: 3.0.0(patch_hash=nf7xdye7472cet5ekgsasa7mpu)
+  p-map:
+    specifier: ^7.0.0
+    version: 7.0.0
 
 devDependencies:
   '@babel/core':
@@ -1260,6 +1263,11 @@ packages:
     dependencies:
       wrappy: 1.0.2
     dev: true
+
+  /p-map@7.0.0:
+    resolution: {integrity: sha512-EZl03dLKv3RypkrjlevZoNwQMSy4bAblWcR18zhonktnN4fUs3asFQKSe0awn982omGxamvbejqQKQYDJYHCEg==}
+    engines: {node: '>=18'}
+    dev: false
 
   /path-is-absolute@1.0.1:
     resolution: {integrity: sha512-AVbw3UJ2e9bq64vSaS9Am0fje1Pa8pbGqTTsmXfaIiMpnr5DlDhfJOuLj9Sf95ZPVDAUerDfEk88MPmPe7UCQg==}

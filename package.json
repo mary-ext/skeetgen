@@ -11,7 +11,10 @@
 	},
 	"wireit": {
 		"gen": {
-			"dependencies": ["gen:archive_css", "gen:archive_search_js"]
+			"dependencies": [
+				"gen:archive_css",
+				"gen:archive_search_js"
+			]
 		},
 		"gen:archive_css": {
 			"command": "tailwindcss -i src_templates/styles/index.css -o public/archive_assets/style.css --minify",
@@ -39,7 +42,8 @@
 		"@ipld/car": "^5.2.4",
 		"@ipld/dag-cbor": "^9.0.6",
 		"multiformats": "^12.1.3",
-		"native-file-system-adapter": "^3.0.0"
+		"native-file-system-adapter": "^3.0.0",
+		"p-map": "^7.0.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.23.6",

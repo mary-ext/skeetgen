@@ -1,4 +1,5 @@
 import { type FileSystemFileHandle, showSaveFilePicker } from 'native-file-system-adapter';
+import map_promises from 'p-map';
 
 import { type DidDocument, Agent, getPdsEndpoint } from '@externdefs/bluesky-client/agent';
 import { ResponseType, XRPCError, type XRPCResponse } from '@externdefs/bluesky-client/xrpc-utils';
@@ -269,55 +270,59 @@ class ExportDataForm extends HTMLElement {
 
 				$status.textContent = `Downloading blobs`;
 
-				await each_limit(cids, 2, async (cid) => {
-					const segment = get_cid_segment(cid);
+				await map_promises(
+					cids,
+					async (cid) => {
+						const segment = get_cid_segment(cid);
 
-					let response: XRPCResponse<unknown>;
+						let response: XRPCResponse<unknown>;
 
-					while (true) {
-						try {
-							response = await agent.rpc.get('com.atproto.sync.getBlob', {
-								signal: signal,
-								params: {
-									did: did,
-									cid: cid,
-								},
-							});
-						} catch (err) {
-							if (err instanceof XRPCError) {
-								// we got ratelimited, let's cool down
-								if (err.status === ResponseType.RateLimitExceeded) {
-									const rl_reset = err.headers?.['ratelimit-reset'];
+						while (true) {
+							try {
+								response = await agent.rpc.get('com.atproto.sync.getBlob', {
+									signal: signal,
+									params: {
+										did: did,
+										cid: cid,
+									},
+								});
+							} catch (err) {
+								if (err instanceof XRPCError) {
+									// we got ratelimited, let's cool down
+									if (err.status === ResponseType.RateLimitExceeded) {
+										const rl_reset = err.headers?.['ratelimit-reset'];
 
-									if (rl_reset !== undefined) {
-										// `ratelimit-reset` is in unix
-										const reset_date = +rl_reset * 1_000;
-										const now = Date.now();
+										if (rl_reset !== undefined) {
+											// `ratelimit-reset` is in unix
+											const reset_date = +rl_reset * 1_000;
+											const now = Date.now();
 
-										// add one second just to be sure
-										const delta = reset_date - now + 1_000;
+											// add one second just to be sure
+											const delta = reset_date - now + 1_000;
 
-										await sleep(delta);
-										continue;
+											await sleep(delta);
+											continue;
+										}
 									}
 								}
+
+								throw err;
 							}
 
-							throw err;
+							break;
 						}
 
-						break;
-					}
+						const entry = write_tar_entry({
+							filename: `blobs/${segment}`,
+							data: response.data as Uint8Array,
+						});
 
-					const entry = write_tar_entry({
-						filename: `blobs/${segment}`,
-						data: response.data as Uint8Array,
-					});
+						await writable.write(entry);
 
-					await writable.write(entry);
-
-					$status.textContent = `Downloading blobs (${++done} of ${total})`;
-				});
+						$status.textContent = `Downloading blobs (${++done} of ${total})`;
+					},
+					{ concurrency: 2, signal: signal },
+				);
 			}
 		} finally {
 			$status.textContent = `Finishing up`;
@@ -341,70 +346,4 @@ function get_cid_segment(cid: string) {
 
 function sleep(ms: number) {
 	return new Promise<void>((resolve) => setTimeout(resolve, ms));
-}
-
-function each_limit<T>(values: T[], limit: number, iterator: (value: T, index: number) => Promise<void>) {
-	return new Promise<void>((res, rej) => {
-		let active = 0;
-		let current = 0;
-
-		let fulfilled = false;
-
-		const errors: any[] = [];
-
-		const finish = () => {
-			if (fulfilled || active > 0) {
-				return;
-			}
-
-			fulfilled = true;
-
-			if (errors.length > 0) {
-				rej(new AggregateError(errors));
-			} else {
-				res();
-			}
-		};
-
-		const resolve = () => {
-			active--;
-			run();
-		};
-
-		const reject = (err: any) => {
-			active--;
-			errors.push(err);
-		};
-
-		const run = () => {
-			const c = current++;
-
-			if (fulfilled) {
-				return;
-			}
-			if (c >= values.length) {
-				return finish();
-			}
-
-			const value = values[c];
-
-			active++;
-
-			try {
-				const ret = iterator(value, c);
-
-				if (ret && 'then' in ret) {
-					ret.then(resolve, reject);
-				} else {
-					resolve();
-				}
-			} catch (err) {
-				reject(err);
-			}
-		};
-
-		for (let i = 0; i < limit; i++) {
-			run();
-		}
-	});
 }
