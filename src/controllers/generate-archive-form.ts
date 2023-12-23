@@ -90,7 +90,7 @@ class GenerateArchiveForm extends HTMLElement {
 					startIn: 'downloads',
 					types: [
 						{
-							description: 'TAR archive',
+							description: 'Tarball archive',
 							accept: { 'application/x-tar': ['.tar'] },
 						},
 					],
