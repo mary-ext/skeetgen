@@ -286,9 +286,8 @@ class ExportDataForm extends HTMLElement {
 				await map_promises(
 					cids,
 					async (cid) => {
-						const segment = get_cid_segment(cid);
-
 						let response: XRPCResponse<unknown>;
+						let fails = 0;
 
 						while (true) {
 							try {
@@ -300,10 +299,6 @@ class ExportDataForm extends HTMLElement {
 									},
 								});
 							} catch (err) {
-								if (signal.aborted) {
-									return;
-								}
-
 								if (err instanceof XRPCError) {
 									// we got ratelimited, let's cool down
 									if (err.status === ResponseType.RateLimitExceeded) {
@@ -323,11 +318,18 @@ class ExportDataForm extends HTMLElement {
 									}
 								}
 
+								// Retry 2 times before failing entirely.
+								if (++fails < 3) {
+									continue;
+								}
+
 								throw err;
 							}
 
 							break;
 						}
+
+						const segment = get_cid_segment(cid);
 
 						const entry = write_tar_entry({
 							filename: `blobs/${segment}`,
