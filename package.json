@@ -49,7 +49,7 @@
 		"@babel/core": "^7.23.6",
 		"@babel/plugin-syntax-typescript": "^7.23.3",
 		"@intrnl/jsx-to-string": "^0.1.5",
-		"@minify-html/node": "^0.11.1",
+		"@minify-html/node": "0.11.1",
 		"@rollup/plugin-babel": "^6.0.4",
 		"@tailwindcss/forms": "^0.5.7",
 		"autoprefixer": "^10.4.16",
