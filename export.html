@@ -8,32 +8,42 @@
 	</head>
 	<body>
 		<div class="min-h-screen bg-neutral-950 text-sm text-white">
-			<fieldset id="fieldset" disabled class="mx-auto min-h-screen max-w-xl border-neutral-700 sm:border-x">
-				<export-data-form class="contents">
-					<div class="m-4">
-						<h1 class="text-base font-semibold">Export Bluesky data</h1>
-						<p>Enter your Bluesky handle or DID here to retrieve one.</p>
-						<div class="flex gap-1 text-neutral-400">
-							<span
-								>built by
-								<a href="https://bsky.app/profile/mary.my.id" class="text-blue-400 hover:underline"
-									>mary</a
-								></span
-							>
-							<span aria-hidden="true">|</span>
-							<a href="https://github.com/mary-ext/skeetgen" class="text-blue-400 hover:underline"
-								>source code</a
-							>
-						</div>
+			<fieldset
+				id="fieldset"
+				disabled
+				class="mx-auto flex min-h-screen max-w-xl flex-col border-neutral-700 sm:border-x"
+			>
+				<div class="p-4">
+					<h1 class="text-base font-semibold">Export Bluesky data</h1>
+					<p>Enter your Bluesky handle or DID here to retrieve one.</p>
+					<div class="flex gap-1 text-neutral-400">
+						<span
+							>built by
+							<a href="https://bsky.app/profile/mary.my.id" class="text-blue-400 hover:underline"
+								>mary</a
+							></span
+						>
+						<span aria-hidden="true">|</span>
+						<a
+							href="https://github.com/mary-ext/langit-next/wiki/Donation"
+							class="text-blue-400 hover:underline"
+							>donate</a
+						>
+						<span aria-hidden="true">|</span>
+						<a href="https://github.com/mary-ext/skeetgen" class="text-blue-400 hover:underline"
+							>source code</a
+						>
 					</div>
+				</div>
 
-					<noscript>
-						<div class="m-4 rounded bg-yellow-900 px-4 py-3">
-							<h2 class="font-semibold">Please enable JavaScript.</h2>
-							<p>We can't function without it, as the app entirely runs on your device, sorry!</p>
-						</div>
-					</noscript>
+				<noscript>
+					<div class="m-4 rounded bg-yellow-900 px-4 py-3">
+						<h2 class="font-semibold">Please enable JavaScript.</h2>
+						<p>We can't function without it, as the app entirely runs on your device, sorry!</p>
+					</div>
+				</noscript>
 
+				<export-data-form class="contents">
 					<div
 						class="m-4 rounded bg-yellow-900 px-4 py-3"
 						style="display: none"
