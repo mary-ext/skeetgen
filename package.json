@@ -58,6 +58,7 @@
 		"prettier": "^3.1.1",
 		"prettier-plugin-tailwindcss": "^0.5.9",
 		"tailwindcss": "^3.4.0",
+		"terser": "^5.26.0",
 		"typescript": "^5.3.3",
 		"vite": "^5.0.10",
 		"wireit": "^0.14.1"

@@ -10,10 +10,21 @@ export default defineConfig({
 		include: ['@intrnl/jsx-to-string/runtime'],
 	},
 	build: {
+		minify: 'terser',
+		sourcemap: true,
+		target: 'esnext',
+		modulePreload: {
+			polyfill: false,
+		},
 		rollupOptions: {
 			input: {
 				index: './index.html',
 				export: './export.html',
+			},
+		},
+		terserOptions: {
+			compress: {
+				passes: 2,
 			},
 		},
 	},
