@@ -2,7 +2,9 @@ import { type FileSystemFileHandle, showSaveFilePicker } from 'native-file-syste
 import map_promises from 'p-map';
 
 import { type DidDocument, Agent, getPdsEndpoint } from '@externdefs/bluesky-client/agent';
-import { ResponseType, XRPCError, type XRPCResponse } from '@externdefs/bluesky-client/xrpc-utils';
+import { type XRPCResponse, ResponseType, XRPCError } from '@externdefs/bluesky-client/xrpc-utils';
+
+import { Logger } from '../utils/logger.tsx';
 
 import { target } from '../utils/controller.ts';
 import { format_bytes } from '../utils/format-bytes.ts';
@@ -22,7 +24,7 @@ const supports_fsa = 'showDirectoryPicker' in globalThis;
 
 class ExportDataForm extends HTMLElement {
 	private form = target<HTMLFormElement>(this, 'form');
-	private status = target<HTMLParagraphElement>(this, 'status');
+	private logger = target<HTMLDivElement>(this, 'logger');
 
 	private fsa_warning = target<HTMLDivElement>(this, 'fsa_warning');
 
@@ -41,7 +43,6 @@ class ExportDataForm extends HTMLElement {
 
 		{
 			const $form = this.form.get()!;
-			const $status = this.status.get()!;
 
 			let controller: AbortController | undefined;
 
@@ -62,11 +63,9 @@ class ExportDataForm extends HTMLElement {
 					this.object_url = undefined;
 				}
 
-				$status.textContent = '';
-				$status.classList.remove('text-red-500');
-				$status.classList.add('opacity-50');
-
 				const date = new Date().toISOString();
+
+				const logger = new Logger(this.logger.get()!, signal);
 
 				const promise = showSaveFilePicker({
 					suggestedName: `${date}-${identifier}.tar`,
@@ -89,11 +88,8 @@ class ExportDataForm extends HTMLElement {
 
 					window.addEventListener('beforeunload', this.handle_before_unload);
 
-					this.download_archive(signal, fd, identifier, with_media).then(
+					this.download_archive(signal, logger, fd, identifier, with_media).then(
 						() => {
-							// If we got here, we're still dealing with our own controller.
-							controller!.abort();
-
 							window.removeEventListener('beforeunload', this.handle_before_unload);
 						},
 						(err) => {
@@ -101,13 +97,8 @@ class ExportDataForm extends HTMLElement {
 								return;
 							}
 
-							console.error(err);
-
 							window.removeEventListener('beforeunload', this.handle_before_unload);
-
-							$status.textContent = err.message;
-							$status.classList.add('text-red-500');
-							$status.classList.remove('opacity-50');
+							logger.error(err.message);
 						},
 					);
 				});
@@ -117,11 +108,12 @@ class ExportDataForm extends HTMLElement {
 
 	async download_archive(
 		signal: AbortSignal,
+		logger: Logger,
 		fd: FileSystemFileHandle,
 		identifier: string,
 		with_media: boolean,
 	) {
-		const $status = this.status.get()!;
+		logger.log(`Data export started`);
 
 		// 1. Resolve DID if it's not one
 		let did: DID;
@@ -129,7 +121,7 @@ class ExportDataForm extends HTMLElement {
 			if (is_did(identifier)) {
 				did = identifier;
 			} else {
-				$status.textContent = `Resolving handle...`;
+				using _progress = logger.progress(`Resolving ${identifier}`);
 
 				const agent = new Agent({ serviceUri: APPVIEW_URL });
 
@@ -141,6 +133,7 @@ class ExportDataForm extends HTMLElement {
 				});
 
 				did = response.data.did;
+				logger.log(`Resolved @${identifier} to ${did}`);
 			}
 		}
 
@@ -151,7 +144,7 @@ class ExportDataForm extends HTMLElement {
 			const ident = rest.join(':');
 
 			if (type === 'plc') {
-				$status.textContent = `Contacting PLC directory...`;
+				using _progress = logger.progress(`Contacting PLC directory`);
 
 				const response = await fetch(`https://plc.directory/${did}`, { signal: signal });
 
@@ -167,7 +160,7 @@ class ExportDataForm extends HTMLElement {
 					throw new Error(`Invalid did:web identifier: ${ident}`);
 				}
 
-				$status.textContent = `Contacting ${ident}...`;
+				using _progress = logger.progress(`Contacting ${ident}`);
 
 				const response = await fetch(`https://${ident}/.well-known/did.json`, { signal: signal });
 
@@ -189,6 +182,8 @@ class ExportDataForm extends HTMLElement {
 			throw new Error(`This user is not registered to any Bluesky PDS.`);
 		}
 
+		logger.log(`User is located on ${new URL(pds).hostname}`);
+
 		// 3. Download and write the files...
 		const writable = await fd.createWritable({ keepExistingData: false });
 
@@ -205,7 +200,7 @@ class ExportDataForm extends HTMLElement {
 
 			// Data repository
 			{
-				$status.textContent = `Downloading repository`;
+				using progress = logger.progress(`Downloading repository`);
 
 				const response = await fetch(`${pds}/xrpc/com.atproto.sync.getRepo?did=${did}`, { signal: signal });
 				const body = response.body;
@@ -217,18 +212,13 @@ class ExportDataForm extends HTMLElement {
 				const chunks: Uint8Array[] = [];
 
 				let size = 0;
-				let log = true;
 
 				for await (const chunk of iterate_stream(body)) {
 					size += chunk.length;
 					chunks.push(chunk);
 
-					// Rate-limit the text update
-					if (log) {
-						log = false;
-						$status.textContent = `Downloading repository (${format_bytes(size)})`;
-
-						setTimeout(() => (log = true), 500);
+					if (!progress.ratelimited) {
+						progress.update(`Downloading repository (${format_bytes(size)})`);
 					}
 				}
 
@@ -253,106 +243,123 @@ class ExportDataForm extends HTMLElement {
 
 			// Blobs
 			if (with_media) {
-				$status.textContent = `Retrieving list of blobs`;
-
 				const agent = new Agent({ serviceUri: pds });
 
 				let done = 0;
 				let cids: string[] = [];
 				let cursor: string | undefined;
 
-				do {
-					const response = await agent.rpc.get('com.atproto.sync.listBlobs', {
-						signal: signal,
-						params: {
-							did: did,
-							cursor: cursor,
-							limit: 1000,
-						},
-					});
+				{
+					using progress = logger.progress(`Retrieving list of blobs`, null);
+					do {
+						const response = await agent.rpc.get('com.atproto.sync.listBlobs', {
+							signal: signal,
+							params: {
+								did: did,
+								cursor: cursor,
+								limit: 1000,
+							},
+						});
 
-					const data = response.data;
+						const data = response.data;
 
-					cids = cids.concat(data.cids);
-					cursor = data.cursor;
+						cids = cids.concat(data.cids);
+						cursor = data.cursor;
 
-					$status.textContent = `Retrieving list of blobs... (${cids.length} found)`;
-				} while (cursor != null);
+						progress.update(`Retrieving list of blobs (${cids.length} found)`);
+					} while (cursor != null);
+				}
 
 				const total = cids.length;
 
-				$status.textContent = `Downloading blobs`;
+				logger.log(`Found ${total} blobs to download`);
 
-				await map_promises(
-					cids,
-					async (cid) => {
-						let response: XRPCResponse<unknown>;
-						let fails = 0;
+				{
+					using progress = logger.progress(`Downloading blobs`);
 
-						while (true) {
-							try {
-								response = await agent.rpc.get('com.atproto.sync.getBlob', {
-									signal: signal,
-									params: {
-										did: did,
-										cid: cid,
-									},
-								});
-							} catch (err) {
-								if (signal.aborted) {
-									return;
-								}
+					await map_promises(
+						cids,
+						async (cid) => {
+							let response: XRPCResponse<unknown>;
+							let fails = 0;
 
-								if (err instanceof XRPCError) {
-									// we got ratelimited, let's cool down
-									if (err.status === ResponseType.RateLimitExceeded) {
-										const rl_reset = err.headers?.['ratelimit-reset'];
+							while (true) {
+								try {
+									response = await agent.rpc.get('com.atproto.sync.getBlob', {
+										signal: signal,
+										params: {
+											did: did,
+											cid: cid,
+										},
+									});
+								} catch (err) {
+									if (signal.aborted) {
+										return;
+									}
 
-										if (rl_reset !== undefined) {
-											// `ratelimit-reset` is in unix
-											const reset_date = +rl_reset * 1_000;
-											const now = Date.now();
+									if (err instanceof XRPCError) {
+										// we got ratelimited, let's cool down
+										if (err.status === ResponseType.RateLimitExceeded) {
+											const rl_reset = err.headers?.['ratelimit-reset'];
 
-											// add one second just to be sure
-											const delta = reset_date - now + 1_000;
+											if (rl_reset !== undefined) {
+												logger.warn(`Ratelimit exceeded, waiting`);
 
-											await sleep(delta);
-											continue;
+												// `ratelimit-reset` is in unix
+												const reset_date = +rl_reset * 1_000;
+												const now = Date.now();
+
+												// add one second just to be sure
+												const delta = reset_date - now + 1_000;
+
+												await sleep(delta);
+												continue;
+											}
+										} else if (err.status === ResponseType.InvalidRequest) {
+											if (err.message === 'Blob not found') {
+												logger.warn(`Tried to download nonexistent blob\n${cid}`);
+												return;
+											}
 										}
 									}
+
+									// Retry 2 times before failing entirely.
+									if (++fails < 3) {
+										continue;
+									}
+
+									throw err;
 								}
 
-								// Retry 2 times before failing entirely.
-								if (++fails < 3) {
-									continue;
-								}
-
-								throw err;
+								break;
 							}
 
-							break;
-						}
+							const segment = get_cid_segment(cid);
 
-						const segment = get_cid_segment(cid);
+							const entry = write_tar_entry({
+								filename: `blobs/${segment}`,
+								data: response.data as Uint8Array,
+							});
 
-						const entry = write_tar_entry({
-							filename: `blobs/${segment}`,
-							data: response.data as Uint8Array,
-						});
+							await writable.write(entry);
 
-						await writable.write(entry);
-
-						$status.textContent = `Downloading blobs (${++done} of ${total})`;
-					},
-					{ concurrency: 2, signal: signal },
-				);
+							progress.update(`Downloading blobs (${++done} of ${total})`);
+						},
+						{ concurrency: 2, signal: signal },
+					);
+				}
 			}
-		} finally {
-			$status.textContent = `Finishing up`;
+
+			logger.log(`Finishing up`);
 			await writable.close();
+		} catch (err) {
+			logger.log(`Aborting`);
+			await writable.abort();
+
+			throw err;
 		}
 
-		$status.textContent = `Data export finished`;
+		logger.log(`Data export finished`);
 	}
 }
 
