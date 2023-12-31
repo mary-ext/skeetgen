@@ -51,14 +51,18 @@ export function get_page_context(): PageContext {
 }
 
 export function get_blob_str(blob: AtBlob) {
-	// dag-cbor converted these links into CID objects, i'll figure them out later.
-	const ref = blob.ref;
+	const ref = CID.asCID(blob.ref);
 
-	if (ref instanceof CID) {
+	if (ref !== null) {
 		return ref.toString();
 	}
 
-	return ref.$link;
+	// Old blob interface
+	if ('cid' in blob) {
+		return blob.cid as string;
+	}
+
+	return blob.ref.$link;
 }
 
 export function is_did(str: DID): str is DID {
