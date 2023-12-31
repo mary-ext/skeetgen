@@ -98,6 +98,8 @@ class ExportDataForm extends HTMLElement {
 							}
 
 							window.removeEventListener('beforeunload', this.handle_before_unload);
+
+							console.error(err);
 							logger.error(err.message);
 						},
 					);
