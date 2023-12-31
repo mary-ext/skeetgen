@@ -18,7 +18,7 @@ export class Logger {
 		const id = 'log_container_' + uid++;
 
 		const html = (
-			<div id={id} class="flex flex-col font-mono text-[13px]">
+			<div id={id} class="flex flex-col font-mono text-xs">
 				<ul class="contents"></ul>
 				<ul class="contents"></ul>
 			</div>
