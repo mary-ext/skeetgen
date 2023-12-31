@@ -43,8 +43,8 @@ export class Logger {
 
 		const html = (
 			<li class="flex gap-1.5 px-1 py-0.5">
-				<span class="whitespace-pre-wrap text-white/50">{time_format.format(now)}</span>
-				<span class="text-white">{message}</span>
+				<span class="shrink-0 whitespace-pre-wrap text-white/50">{time_format.format(now)}</span>
+				<span class="break-words text-white">{message}</span>
 			</li>
 		);
 
@@ -56,8 +56,8 @@ export class Logger {
 
 		const html = (
 			<li class="flex gap-1.5 bg-yellow-950 px-1 py-0.5">
-				<span class="whitespace-pre-wrap text-white/50">{time_format.format(now)}</span>
-				<span class="text-white">{message}</span>
+				<span class="shrink-0 whitespace-pre-wrap text-white/50">{time_format.format(now)}</span>
+				<span class="break-words text-white">{message}</span>
 			</li>
 		);
 
@@ -69,8 +69,8 @@ export class Logger {
 
 		const html = (
 			<li class="flex gap-1.5 bg-red-950 px-1 py-0.5">
-				<span class="whitespace-pre-wrap text-white/50">{time_format.format(now)}</span>
-				<span class="text-white">{message}</span>
+				<span class="shrink-0 whitespace-pre-wrap text-white/50">{time_format.format(now)}</span>
+				<span class="break-words text-white">{message}</span>
 			</li>
 		);
 
@@ -82,8 +82,8 @@ export class Logger {
 
 		const html = (
 			<li id={id} class="flex gap-1.5 px-1 py-0.5">
-				<span class="whitespace-pre-wrap text-white/50">-----</span>
-				<span class="text-white"> </span>
+				<span class="shrink-0 whitespace-pre-wrap text-white/50">-----</span>
+				<span class="break-words text-white"> </span>
 			</li>
 		);
 
