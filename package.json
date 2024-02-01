@@ -38,30 +38,30 @@
 	},
 	"dependencies": {
 		"@akryum/flexsearch-es": "^0.7.32",
-		"@externdefs/bluesky-client": "^0.3.9",
-		"@ipld/car": "^5.2.4",
-		"@ipld/dag-cbor": "^9.0.7",
+		"@externdefs/bluesky-client": "^0.3.12",
+		"@ipld/car": "^5.2.6",
+		"@ipld/dag-cbor": "^9.1.0",
 		"multiformats": "^12.1.3",
 		"native-file-system-adapter": "^3.0.0",
 		"p-map": "^7.0.1"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.23.7",
+		"@babel/core": "^7.23.9",
 		"@babel/plugin-syntax-typescript": "^7.23.3",
 		"@intrnl/jsx-to-string": "^0.1.5",
 		"@minify-html/node": "0.11.1",
 		"@rollup/plugin-babel": "^6.0.4",
 		"@tailwindcss/forms": "^0.5.7",
-		"autoprefixer": "^10.4.16",
-		"esbuild": "^0.19.11",
-		"postcss": "^8.4.32",
-		"prettier": "^3.1.1",
-		"prettier-plugin-tailwindcss": "^0.5.10",
-		"tailwindcss": "^3.4.0",
-		"terser": "^5.26.0",
+		"autoprefixer": "^10.4.17",
+		"esbuild": "^0.19.12",
+		"postcss": "^8.4.33",
+		"prettier": "^3.2.4",
+		"prettier-plugin-tailwindcss": "^0.5.11",
+		"tailwindcss": "^3.4.1",
+		"terser": "^5.27.0",
 		"typescript": "^5.3.3",
-		"vite": "^5.0.10",
-		"wireit": "^0.14.1"
+		"vite": "^5.0.12",
+		"wireit": "^0.14.4"
 	},
 	"pnpm": {
 		"patchedDependencies": {
