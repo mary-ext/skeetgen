@@ -164,7 +164,14 @@ class ExportDataForm extends HTMLElement {
 
 				using _progress = logger.progress(`Contacting ${ident}`);
 
-				const response = await fetch(`https://${ident}/.well-known/did.json`, { signal: signal });
+				const response = await fetch(`https://${ident}/.well-known/did.json`, {
+					mode: 'no-cors',
+					signal: signal,
+				});
+
+				if (response.type === 'opaque') {
+					throw new Error(`Unable to retrieve DID document due to CORS error`);
+				}
 
 				if (response.status === 404) {
 					throw new Error(`DID document not found`);
