@@ -106,7 +106,6 @@ var patch = (parent, node, oldVNode, newVNode, isSvg) => {
 				oldVKids[oldHead].node,
 				oldVKids[oldHead],
 				(newVKids[newHead] = maybeVNode(newVKids[newHead++], oldVKids[oldHead++])),
-
 				isSvg,
 			);
 		}
@@ -121,7 +120,6 @@ var patch = (parent, node, oldVNode, newVNode, isSvg) => {
 				oldVKids[oldTail].node,
 				oldVKids[oldTail],
 				(newVKids[newTail] = maybeVNode(newVKids[newTail--], oldVKids[oldTail--])),
-
 				isSvg,
 			);
 		}
