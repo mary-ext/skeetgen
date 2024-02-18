@@ -13,7 +13,7 @@ import { write_tar_entry } from '../utils/tar.ts';
 
 type DID = `did:${string}`;
 
-const APPVIEW_URL = 'https://api.bsky.app';
+const APPVIEW_URL = 'https://public.api.bsky.app';
 const HOST_RE = /^([a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*(?:\.[a-zA-Z]+))$/;
 
 const is_did = (str: string): str is DID => {
